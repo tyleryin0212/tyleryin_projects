@@ -8,6 +8,8 @@ import com.tyleryin.medialibrary.in_memory_domain.*;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 /**
  * decides how to create items, translates DTO to domain
@@ -65,6 +67,24 @@ public class InMemoryItemService implements ItemService {
         // Return first/last from the request (safe + consistent with your domain)
         res.setFirstName(req.getFirstName());
         res.setLastName(req.getLastName());
+
+        return res;
+    }
+
+    @Override
+    public Optional<ItemResponse> getById(UUID id) {
+        return catalog.getAllItems().stream()
+                .filter(item -> item.getId().equals(id))
+                .findFirst()
+                .map(this::toItemResponse);
+    }
+
+    private ItemResponse toItemResponse(Item item) {
+        ItemResponse res = new ItemResponse();
+        res.setId(item.getId());
+        res.setTitle(item.getTitle());
+        res.setYear(item.getYear());
+        res.setType(item instanceof Book ? ItemType.BOOK : ItemType.MUSIC);
 
         return res;
     }

@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.util.List;
+import java.util.UUID;
 
 
 /**
@@ -35,6 +36,13 @@ public class ItemsController {
         return ResponseEntity
                 .created(URI.create("/items/" + created.getId()))
                 .body(created);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<ItemResponse> getById(@PathVariable UUID id) {
+        return itemService.getById(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
 }
