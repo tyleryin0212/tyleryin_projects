@@ -1,5 +1,7 @@
 package com.tyleryin.medialibrary.in_memory_domain;
 
+import java.util.UUID;
+
 /**
  * The {@code Music} class represents a musical recording or composition in the library catalog.
  * <p>
@@ -32,6 +34,10 @@ public class Music extends Item{
      */
     public Music(Band band, String title, int year) {
         super(band, title, year);
+    }
+
+    public Music(UUID id, Creator creator, String newTitle, int newYear) {
+        super(id, creator, newTitle, newYear);
     }
 
     public RecordingArtist getArtist() {

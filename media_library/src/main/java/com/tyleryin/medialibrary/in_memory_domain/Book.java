@@ -1,5 +1,7 @@
 package com.tyleryin.medialibrary.in_memory_domain;
 
+import java.util.UUID;
+
 /**
  * The {@code Book} class represents a literary work in the library catalog.
  * <p>
@@ -20,6 +22,10 @@ public class Book extends Item{
     public Book(Author author, String title, int year) {
         super(author, title, year);
 
+    }
+
+    public Book(UUID id, Author author, String newTitle, int newYear) {
+        super(id, author, newTitle, newYear);
     }
 
     public Author getAuthor() {

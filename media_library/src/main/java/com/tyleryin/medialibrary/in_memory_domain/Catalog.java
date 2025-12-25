@@ -3,6 +3,7 @@ package com.tyleryin.medialibrary.in_memory_domain;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 
 /**
  * The {@code Catalog} class represents a library catalog that stores a collection of {@link Item} objects,
@@ -33,9 +34,8 @@ public class Catalog {
         itemList.add(item);
     }
 
-    public boolean removeItem(Item item) {
-        if (item == null) return false;
-        return itemList.remove(item);
+    public boolean removeById(UUID id) {
+        return itemList.removeIf(item -> Objects.equals(item.getId(), id));
     }
 
     /**
@@ -83,5 +83,15 @@ public class Catalog {
      */
     public List<Item> getAllItems() {
         return List.copyOf(itemList);
+    }
+
+    public boolean replaceById(UUID id, Item replacement) {
+        for (int idx = 0; idx < itemList.size(); idx++) {
+            if (itemList.get(idx).getId().equals(id)) {
+                itemList.set(idx, replacement);
+                return true;
+            }
+        }
+        return false;
     }
 }

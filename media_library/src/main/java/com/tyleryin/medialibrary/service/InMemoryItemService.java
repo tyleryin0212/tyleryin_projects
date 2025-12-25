@@ -4,6 +4,7 @@ package com.tyleryin.medialibrary.service;
 import com.tyleryin.medialibrary.DTO.CreateItemRequest;
 import com.tyleryin.medialibrary.DTO.ItemResponse;
 import com.tyleryin.medialibrary.DTO.ItemType;
+import com.tyleryin.medialibrary.DTO.UpdateItemRequest;
 import com.tyleryin.medialibrary.in_memory_domain.*;
 import org.springframework.stereotype.Service;
 
@@ -20,14 +21,6 @@ public class InMemoryItemService implements ItemService {
 
     public InMemoryItemService(Catalog catalog) {
         this.catalog = catalog;
-    }
-
-    @Override
-    public List<String> listItemTitles() {
-        //return titles of all items for now
-        return catalog.getAllItems().stream()
-                .map(Item::getTitle)
-                .toList();
     }
 
     @Override
@@ -87,5 +80,40 @@ public class InMemoryItemService implements ItemService {
         res.setType(item instanceof Book ? ItemType.BOOK : ItemType.MUSIC);
 
         return res;
+    }
+
+    @Override
+    public List<ItemResponse> getAll() {
+        return catalog.getAllItems().stream()
+                .map(this::toItemResponse)
+                .toList();
+    }
+
+    @Override
+    public boolean deleteById(UUID id) {
+        return catalog.removeById(id);
+    }
+
+    @Override
+    public Optional<ItemResponse> updateById(UUID id, UpdateItemRequest req) {
+        return catalog.getAllItems().stream()
+                .filter(i -> i.getId().equals(id))
+                .findFirst()
+                .flatMap(oldItem -> {
+                    String newTitle = (req.getTitle() != null) ? req.getTitle() : oldItem.getTitle();
+                    int newYear = (req.getYear() != null) ? req.getYear() : oldItem.getYear();
+
+                    Item replacement;
+                    if (oldItem instanceof Book b) {
+                        replacement = new Book(oldItem.getId(), b.getAuthor(), newTitle, newYear); // needs ctor that accepts id
+                    } else if (oldItem instanceof Music m) {
+                        replacement = new Music(oldItem.getId(), m.getCreator(), newTitle, newYear); // same idea
+                    } else {
+                        return Optional.empty();
+                    }
+
+                    boolean ok = catalog.replaceById(id, replacement);
+                    return ok ? Optional.of(toItemResponse(replacement)) : Optional.empty();
+                });
     }
 }
