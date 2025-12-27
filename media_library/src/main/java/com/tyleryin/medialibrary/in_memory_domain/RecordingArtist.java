@@ -45,8 +45,13 @@ public class RecordingArtist implements Creator {
      *
      * @return the artist's full name as a {@code String}
      */
+
+    public Name getName() {
+        return name;
+    }
+
     @Override
-    public String getName() {
+    public String getNameString() {
         return name.getFullName();
     }
 

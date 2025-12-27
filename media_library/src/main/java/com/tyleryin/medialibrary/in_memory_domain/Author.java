@@ -46,8 +46,13 @@ public class Author implements Creator {
      *
      * @return the author's full name as a {@code String}
      */
+
+    public Name getName() {
+        return name;
+    }
+
     @Override
-    public String getName() {
+    public String getNameString() {
         return name.getFullName();
     }
 

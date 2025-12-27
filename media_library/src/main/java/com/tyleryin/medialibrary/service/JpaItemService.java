@@ -17,6 +17,7 @@ import com.tyleryin.medialibrary.persistence.entity.ItemEntity;
 import com.tyleryin.medialibrary.persistence.mapper.CreatorMapper;
 import com.tyleryin.medialibrary.persistence.repo.CreatorRepository;
 import com.tyleryin.medialibrary.persistence.repo.ItemRepository;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,6 +25,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+@Primary
 @Service
 public class JpaItemService implements ItemService {
 
@@ -112,11 +114,11 @@ public class JpaItemService implements ItemService {
 
         if (item instanceof Book book) {
             response.setType(ItemType.BOOK);
-            response.setFirstName(book.getAuthor().getName());
+            response.setFirstName(book.getAuthor().getNameString());
             response.setLastName("");
         } else if (item instanceof Music music) {
             response.setType(ItemType.MUSIC);
-            response.setFirstName(music.getCreator().getName());
+            response.setFirstName(music.getCreator().getNameString());
             response.setLastName("");
         }
 

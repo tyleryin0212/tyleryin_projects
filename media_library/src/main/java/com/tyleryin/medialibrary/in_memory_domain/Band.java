@@ -45,7 +45,7 @@ public class Band implements Creator {
         return members;
     }
     @Override
-    public String getName() {
+    public String getNameString() {
         return name;
     }
 

@@ -12,16 +12,20 @@ import com.tyleryin.medialibrary.persistence.entity.RecordingArtistEntity;
 public class CreatorMapper {
     private CreatorMapper() {}
 
-    public static CreatorEntity toEntity(Creator creator) {
-        if(creator instanceof Author) {
-            return new AuthorEntity(creator.getId(), creator.getName());
+    public static CreatorEntity toEntity(Creator c) {
+        if (c instanceof Author a) {
+            String first = a.getName().getFirstName();
+            String last  = a.getName().getLastName();
+            return new AuthorEntity(a.getId(), a.getNameString(), first, last);
         }
-        if(creator instanceof RecordingArtist) {
-            return new RecordingArtistEntity(creator.getId(), creator.getName());
+        if (c instanceof RecordingArtist ra) {
+            String first = ra.getName().getFirstName();
+            String last  = ra.getName().getLastName();
+            return new RecordingArtistEntity(ra.getId(), ra.getNameString(), first, last);
         }
-        if(creator instanceof Band) {
-            return new BandEntity(creator.getId(), creator.getName());
+        if (c instanceof Band b) {
+            return new BandEntity(b.getId(), b.getNameString());
         }
-        throw new IllegalArgumentException("Invalid creator type: " + creator.getClass());
+        throw new IllegalArgumentException("Unknown creator type: " + c.getClass());
     }
 }

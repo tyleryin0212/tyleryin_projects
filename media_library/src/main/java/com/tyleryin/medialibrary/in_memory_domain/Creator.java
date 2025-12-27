@@ -28,7 +28,7 @@ public interface Creator {
      *
      * @return the name of the creator as a {@code String}
      */
-    String getName();
+    String getNameString();
     UUID getId();
 
 }
