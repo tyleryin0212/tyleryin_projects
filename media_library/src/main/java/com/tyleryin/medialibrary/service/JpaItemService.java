@@ -9,6 +9,7 @@ import com.tyleryin.medialibrary.persistence.entity.*;
 import com.tyleryin.medialibrary.persistence.mapper.CreatorMapper;
 import com.tyleryin.medialibrary.persistence.repo.CreatorRepository;
 import com.tyleryin.medialibrary.persistence.repo.ItemRepository;
+import org.hibernate.Hibernate;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -88,6 +89,9 @@ public class JpaItemService implements ItemService {
 
     private Item toDomain(ItemEntity e) {
         CreatorEntity c = e.getCreator();
+
+        // Unwrap Hibernate proxy so instanceof works
+        c = (CreatorEntity) Hibernate.unproxy(c);
 
         if (c instanceof AuthorEntity ae) {
             Name name = new Name(ae.getFirstName(), ae.getLastName());
