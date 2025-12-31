@@ -1,11 +1,11 @@
-# Gradle
+# Gradle (generated)
 .gradle/
 build/
 
-# IntelliJ
+# IntelliJ (generated)
 .idea/
-*.iml
 out/
+*.iml
 
 # OS
 .DS_Store
